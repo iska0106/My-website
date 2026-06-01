@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDIA PRO 💎</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system;}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background: linear-gradient(-45deg,
+#0f2027,
+#203a43,
+#2c5364,
+#1c1c2c
+);
+background-size: 400% 400%;
+animation: bgMove 10s ease infinite;
+color:white;
+}  
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* GLASS */
+.screen{
+width:92%;
+max-width:420px;
+padding:20px;
+border-radius:30px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(30px);
+border:1px solid rgba(255,255,255,0.2);
+color:white;
+text-align:center;
+position:absolute;
+max-height:90vh;
+overflow-y:auto;
+}
+
+/* BUTTON */
+button{
+padding:10px;
+margin:5px;
+border:none;
+border-radius:12px;
+background:rgba(255,255,255,0.2);
+color:white;
+cursor:pointer;
+}
+
+/* HIDE */
+.hidden{display:none}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+}
+
+.card{
+position:relative;
+}
+
+.card::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+border-radius:12px;
+background:linear-gradient(45deg,#ff4d6d,#a18cd1,#4d79ff);
+filter:blur(25px);
+opacity:0.5;
+z-index:-1;
+animation: aura 3s infinite alternate;
+}
+
+@keyframes aura{
+from{opacity:0.3;}
+to{opacity:0.7;}
+}
+
+/* 🔥 IMAGE GLOW */
+.card img{
+width:100%;
+border-radius:12px;
+
+/* glow */
+box-shadow:
+0 0 10px #ff4d6d,
+0 0 20px #ff4d6d,
+0 0 30px #a18cd1;
+
+/* animatsiya */
+animation: imgGlow 2s infinite alternate;
+transition:0.3s;
+}
+
+/* 😎 hover boost */
+.card img:hover{
+transform:scale(1.05);
+box-shadow:
+0 0 20px #ff4d6d,
+0 0 40px #ff4d6d,
+0 0 60px #a18cd1;
+}
+
+/* 💥 animation */
+@keyframes imgGlow{
+from{
+box-shadow:
+0 0 5px #ff4d6d,
+0 0 10px #a18cd1;
+}
+to{
+box-shadow:
+0 0 20px #ff4d6d,
+0 0 40px #a18cd1;
+}
+}
+
+/* FLOATING PARTICLES */
+#particles{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+overflow:hidden;
+z-index:0;
+}
+
+.particle{
+position:absolute;
+top:-20px;
+font-size:18px;
+opacity:0.8;
+animation: fall linear infinite;
+}
+
+@keyframes fall{
+0%{
+transform:translateY(-10vh) rotate(0deg);
+opacity:0;
+}
+10%{
+opacity:1;
+}
+100%{
+transform:translateY(110vh) rotate(360deg);
+opacity:0;
+}
+}
+
+.caption{
+font-size:11px;
+opacity:0.8;
+}
+
+/* VIDEO */
+video{
+width:100%;
+border-radius:20px;
+margin:10px 0;
+box-shadow:0 0 20px #ff4d6d;
+}
+
+/* LETTER */
+#letter{
+opacity:0;
+transform:translateY(20px);
+transition:0.5s;
+}
+#letter.show{
+opacity:1;
+transform:translateY(0);
+}
+
+/* FULLSCREEN */
+#fullscreen{
+position:fixed;
+top:0;left:0;
+width:100%;
+height:100%;
+display:none;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,0.8);
+}
+#fullscreen img{
+max-width:90%;
+}
+
+/* MUSIC */
+.music{
+position:fixed;
+bottom:20px;
+right:20px;
+}
+</style>
+</head>
+
+<body>
+
+    <div id="particles"></div>
+
+<button class="music" onclick="toggleMusic()">🎵</button>
+
+<!-- MENU -->
+<div id="menu" class="screen">
+<h2>💎 MENU</h2>
+<button onclick="openLock('gallery')">Gallery</button>
+<button onclick="openLock('videos')">Videos</button>
+<button onclick="openLock('love')">Secret</button>
+</div>
+
+<!-- LOCK -->
+<div id="lock" class="screen hidden">
+<input id="pass" placeholder="password">
+<p id="hintText" style="font-size:11px;opacity:0.7;margin-top:8px;"></p>
+<div style="font-size:12px;opacity:0.7;margin-top:5px;">
+</div>
+<button onclick="check()">Unlock</button>
+<button onclick="back()">Back</button>
+</div>
+
+<!-- GALLERY -->
+<div id="gallery" class="screen hidden">
+<h3>📸 Gallery</h3>
+<div class="grid" id="grid"></div>
+<button onclick="back()">Back</button>
+</div>
+
+<!-- VIDEOS -->
+<div id="videos" class="screen hidden">
+<h3>🎬 Videos</h3>
+
+<video id="v1" controls src="video1.mov"></video>
+<video id="v2" controls src="video2.mov"></video>
+
+<button onclick="back()">Back</button>
+</div>
+
+<!-- LOVE -->
+<div id="love" class="screen hidden">
+<h3>💌 Secret</h3>
+<div id="letter" class="hidden">
+💖 Sen mening eng qadrli insonimsan<br>
+🌸 Har kuni seni o‘ylayman<br>
+✨ Bu sahifa faqat sen uchun
+</div>
+<button onclick="back()">Back</button>
+</div>
+
+<!-- FULL -->
+<div id="fullscreen" onclick="this.style.display='none'">
+<img id="fullImg">
+</div>
+
+<script>
+
+const icons = ["💖","✨","💎","🌸","❤️","⭐"];
+
+function createParticle(){
+let p = document.createElement("div");
+p.className = "particle";
+
+p.innerText = icons[Math.floor(Math.random()*icons.length)];
+
+p.style.left = Math.random()*100 + "vw";
+p.style.animationDuration = (3 + Math.random()*5) + "s";
+p.style.fontSize = (12 + Math.random()*20) + "px";
+
+document.getElementById("particles").appendChild(p);
+
+setTimeout(()=>p.remove(),8000);
+}
+
+/* continuous spawn */
+setInterval(createParticle, 300);
+
+/* PASSWORD */
+let target = "";
+let passwords = {
+gallery: "panda",
+videos: "010607",
+love: "mypanda010607"
+};
+let hints = {
+gallery: "Hint: our liked animal",
+videos: "Hint: birthday date",
+love: "Hint: our secret code"
+};
+
+function openLock(page){
+target = page;
+menu.classList.add("hidden");
+lock.classList.remove("hidden");
+pass.value = "";
+
+/* show hint for each page */
+document.getElementById("hintText").innerText = hints[target];
+}
+
+function check(){
+if(pass.value === passwords[target]){
+lock.classList.add("hidden");
+document.getElementById(target).classList.remove("hidden");
+
+/* love letter animatsiya */
+if(target === "love"){
+let l = document.getElementById("letter");
+l.classList.remove("hidden");
+setTimeout(()=>l.classList.add("show"),100);
+}
+
+}else{
+alert("❌ Wrong password");
+pass.value = "";
+}
+}
+
+function back(){
+menu.classList.remove("hidden");
+lock.classList.add("hidden");
+gallery.classList.add("hidden");
+videos.classList.add("hidden");
+love.classList.add("hidden");
+}
+
+/* 15 IMAGES */
+let grid = document.getElementById("grid");
+
+let captions = [
+"First memory 💖",
+"Sweet moment 🌸",
+"Smile time ✨",
+"Forever us 💫",
+"Love vibe ❤️",
+"Happy day 🌷",
+"Beautiful night 🌙",
+"Together always 🤍",
+"Pure feelings 💕",
+"Magic touch ✨",
+"Warm heart 🔥",
+"Dream memory 🌈",
+"Special you 💎",
+"Hidden love 💌",
+"Last but forever 💖"
+];
+
+for (let i = 1; i <= 15; i++) {
+let div = document.createElement("div");
+div.className = "card";
+
+div.innerHTML = `
+<img src="${i}.jpg" onclick="openImg(this)">
+<div class="caption">${captions[i-1]}</div>
+`;
+
+grid.appendChild(div);
+}
+
+function openImg(img){
+fullscreen.style.display="flex";
+fullImg.src=img.src;
+}
+
+/* MUSIC */
+let audio=new Audio("d:/rasm/Aether - Catharsis.mp3");
+
+/* VIDEOS */
+let v1=document.getElementById("v1");
+let v2=document.getElementById("v2");
+
+/* VIDEO LOGIC */
+v1.addEventListener("play", ()=>{
+audio.pause();
+v2.pause();
+});
+
+v2.addEventListener("play", ()=>{
+audio.pause();
+v1.pause();
+});
+
+/* MUSIC LOGIC */
+function toggleMusic(){
+if(audio.paused){
+audio.play();
+v1.pause();
+v2.pause();
+}else{
+audio.pause();
+}
+}
+
+</script>
+
+</body>
+</html>
